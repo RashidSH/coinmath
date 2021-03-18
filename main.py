@@ -3,6 +3,7 @@
 import asyncio
 import argparse
 import json
+import os
 import progressbar
 import vk_api.exceptions
 from vkcoin import VKCoin
@@ -25,6 +26,8 @@ async def main():
     except FileNotFoundError:
         with open('config.json', 'w') as f:
             json.dump(cfg.config, f, indent=2, ensure_ascii=False)
+
+        os.makedirs('./examples', exist_ok=True)
 
         print('Файл конфигурации (config.json) создан. Нажмите Enter для выхода...')
         input()

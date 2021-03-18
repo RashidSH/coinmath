@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import os
 import sys
 from logging.handlers import RotatingFileHandler
+
+os.makedirs('./logs', exist_ok=True)
 
 logger = logging.getLogger('app')
 logger.setLevel(logging.INFO)
