@@ -1,0 +1,5 @@
+asyncpg
+Pillow
+progressbar2
+vk_api
+vkcoin

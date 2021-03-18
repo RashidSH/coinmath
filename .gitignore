@@ -1,0 +1,4 @@
+examples/*
+logs/*
+
+config.json
