@@ -66,7 +66,7 @@ async def handle_msg(msg):
 
     state = cfg.state.get(msg.user_id)
 
-    if action == 'menu' or re.match(r'(?i)(начать|меню|назад)$', msg.text):
+    if action == 'menu' or re.match(r'(?i)(начать|меню|назад)$', msg.text) or (state == 'menu' and action is None):
         cfg.state.set(msg.user_id, 'menu')
 
         keyboard = VkKeyboard()
@@ -134,10 +134,15 @@ async def handle_msg(msg):
         if user['balance'] <= 0:
             msg.reply('На вашем балансе пусто.')
 
-        if await withdraw(msg.user_id, user['balance']):
+        res = await withdraw(msg.user_id, user['balance'])
+
+        if res:
             msg.reply(f"&#9989; {num_split(user['balance'])} VK Coin успешно переведены на вашу страницу.")
 
             await db.add_balance(msg.user_id, -user['balance'])
+
+        elif res is False:
+            msg.reply('На балансе бота недостаточно VK Coin... Пожалуйста, повторите попытку позже.')
 
         else:
             msg.reply('Произошла ошибка... Пожалуйста, повторите попытку через несколько минут.')

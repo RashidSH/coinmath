@@ -11,8 +11,13 @@ from utils import num_split
 async def withdraw(user_id: int, amount: float) -> bool:
     try:
         cfg.merchant.send_payment(user_id, amount * 1000, mark_as_merchant=True)
+
     except Exception as ex:
-        logger.warning('Произошла ошибка при переводе VK Coin', exc_info=ex)
+        if str(ex).split()[0] == 'NOT_ENOUGH_COINS':
+            return False
+        else:
+            logger.warning('Произошла ошибка при переводе VK Coin', exc_info=ex)
+
     else:
         logger.info(f'Вывод: id{user_id} - {num_split(amount)} VK Coin')
         return True
